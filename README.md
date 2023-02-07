@@ -1,48 +1,34 @@
 # TerraformWebProjet
-first web project
+# Web Servers cluster
 
-terraform init: creates a lock file .terraform.lock.hcl
-
-terraform fmt: main.tf: to make sure that the syntax is valid
-
-terraform validate: Success! The configuration is valid. if the validation is not
-succeded the command return Error:.. with reference to the errors 
-
-terraform graph : digraph{} show the dependencies :
-aws_instance.example (expand)" ->  aws_security_group.instance (expand)"
-aws_instance fait appel à aws_security_group)
-
-terraform apply: to creat the instances and build the infrustructre 
-
-Plan: 2 to add, 0 to change, 0 to destroy
-
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-Outputs:
-
-public_ip = "52.36.176.126"
-
-terraform show: when terraform applies the infrustrcture it create a file terraform.tfstate where terraform store the IDs and resources' properties
-
-# partie2
-
-terraform validate : variable non valid since enabled is a non boolean type
-╷
-│ Error: Invalid default value for variable
+# validate
+Warning: Deprecated Resource
 │ 
-│   on variables.tf line 9, in variable "object_example_with_error":
-│    9:   default = {
-│   10:     name    = "value 1"
-│   11:     age     = 42
-│   12:     tags    = ["a", "b", "c"]
-│   13:     enabled = "invalid"
-│   14:   }
+│   with data.aws_subnet_ids.default,
+│   on main.tf line 48, in data "aws_subnet_ids" "default":
+│   48: data "aws_subnet_ids" "default" {
 │ 
-│ This default value is not compatible with the variable's type constraint: a bool is required.
+│ The aws_subnet_ids data source has been deprecated and will be removed in a future
+│ version. Use the aws_subnets data source instead.
+╵
+Success! The configuration is valid, but there were some validation
+warnings as shown above.
+==> should change aws_subnet_ids with aws_subnets
 
-# after variable port creation
-terraform apply 
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+# plan
+Plan: 3 to add, 0 to change, 0 to destroy.
 
-Outputs:
+You didn't use the -out option to save this plan, so Terraform can't guarantee
+to take exactly these actions if you run "terraform apply" now.
 
-public_ip = "54.149.69.110"
+# apply
+ Error: waiting for Auto Scaling Group (terraform-20230207151027657400000001) capacity satisfied: 1 error occurred:
+│       * Scaling activity (7cc618b1-b6c0-d7fc-4dc2-e842cbfadb98): Failed: Your requested instance type (t2.micro) is not supported in your requested Availability Zone (us-west-2d). Please retry your request by not specifying an Availability Zone or choosing us-west-2a, us-west-2b, us-west-2c. Launching EC2 instance failed.
+
+==> changing max_size to 5
+
+terraform apply
+Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
+
+Checking EC2 instances => ok!
+hello world!
