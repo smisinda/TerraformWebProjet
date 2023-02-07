@@ -32,3 +32,14 @@ Apply complete! Resources: 1 added, 0 changed, 1 destroyed.
 
 Checking EC2 instances => ok!
 hello world!
+
+# changing "aws_subnets_ids" to "aws_subnets"
+syntax:
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+terraform plan
+No changes. Your infrastructure matches the configuration.
